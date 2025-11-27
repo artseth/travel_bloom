@@ -1,0 +1,25 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+  
+}
+
+.navbar{
+    color: white;
+}
+
+.navItems{
+    display: flex;
+    color: white !important;
+    justify-content:space-evenly;
+    align-items: center;
+    gap: 2px;
+    list-style: none;
+    margin: auto;
+    position: sticky;
+    height: 100px;
+    text-decoration: none;
+    background-color: rgb(56, 63, 56);
+}
