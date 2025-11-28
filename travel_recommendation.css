@@ -2,8 +2,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-
-  
 }
 
 .navbar{
@@ -12,14 +10,75 @@
 
 .navItems{
     display: flex;
-    color: white !important;
+    color: white;
     justify-content:space-evenly;
     align-items: center;
-    gap: 2px;
+    gap: 20px;
     list-style: none;
     margin: auto;
-    position: sticky;
-    height: 100px;
+    height: 120px;
     text-decoration: none;
     background-color: rgb(56, 63, 56);
+}
+
+.navbar ul li {
+    align-items: flex-end;
+}
+
+.navbar ul li a{
+    color: white;
+    text-decoration: none;
+}
+
+.navbar ul li a:hover {
+    color: aqua;
+}
+
+.glass-search-form {
+        max-width: 400px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .glass-search-container {
+        display: flex;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    }
+
+    .glass-search-input {
+        flex: 1;
+        padding: 15px 20px;
+        border: none;
+        outline: none;
+        font-size: 16px;
+        background: transparent;
+    }
+
+    .glass-search-button {
+        padding: 15px 25px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        transition: transform 0.2s ease;
+    }
+
+    .glass-search-button:hover {
+        transform: translateX(4px);
+    }
+
+#title{
+    display: flex;
+    justify-content: center;
+    padding: 20px 20px;
+    background-color: aqua;
+    color: white;
 }
