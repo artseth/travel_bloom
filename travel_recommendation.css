@@ -6,6 +6,10 @@
 
 .navbar{
     color: white;
+    position: sticky;
+    top : 0;
+    z-index: 100;
+
 }
 
 .navItems{
@@ -28,24 +32,32 @@
 .navbar ul li a{
     color: white;
     text-decoration: none;
+    transition: 0.3s ease;
+    display: inline-block;
 }
 
 .navbar ul li a:hover {
     color: aqua;
+    transform: scale(1.10)
+   
 }
 
 .glass-search-form {
         max-width: 400px;
-        margin: 2rem auto;
-        padding: 2rem;
+        max-height: 50px;
+        padding: 1rem;
         background: rgba(255, 255, 255, 0.1);
         backdrop-filter: blur(10px);
         border-radius: 20px;
         border: 1px solid rgba(255, 255, 255, 0.2);
+        transform: translatex(180px);
     }
 
     .glass-search-container {
         display: flex;
+        max-width: 400px;
+        max-height: 50px;
+        transform: translateY(-15px);
         background: rgba(255, 255, 255, 0.9);
         border-radius: 15px;
         overflow: hidden;
@@ -55,6 +67,8 @@
     .glass-search-input {
         flex: 1;
         padding: 15px 20px;
+         max-width: 400px;
+        max-height: 50px;
         border: none;
         outline: none;
         font-size: 16px;
@@ -63,6 +77,8 @@
 
     .glass-search-button {
         padding: 15px 25px;
+        max-width: 400px;
+        max-height: 50px;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
         border: none;
@@ -75,10 +91,21 @@
         transform: translateX(4px);
     }
 
+    #search_icon{
+        transform:translateY(-10px)
+    }
+
 #title{
     display: flex;
     justify-content: center;
-    padding: 20px 20px;
+    padding: 10px;
     background-color: aqua;
     color: white;
+   
+    ;
 }
+
+#title h1{
+   font-size:40px;
+}
+
