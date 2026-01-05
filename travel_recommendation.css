@@ -138,16 +138,27 @@
     align-items:center;
     justify-content: center;
     height: 100px;
-    background-color: rgb(188, 68, 12);
+    
 }
 
 .item-1{
-    background-color: rgb(108, 87, 79);
+
     grid-area: 1 / 1 / 1 / 1;
     height: 100px;
     border-radius: 20px;
     padding: 20px;
     align-items: center;
+    
+}
+
+.social_icons{
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+    gap: 15px;
+}
+.icons{
+    width: 50px;
 }
 
 
