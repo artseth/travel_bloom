@@ -129,9 +129,25 @@
     display: grid;
     grid-template-rows: 25% 25% 25% 25%;
     grid-template-columns: 25% 25% 25% 25% ;
+
+
+}
+
+.item-0{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    height: 100px;
+    background-color: rgb(188, 68, 12);
 }
 
 .item-1{
-    background-color: coral;
-    height: 500px;
+    background-color: rgb(108, 87, 79);
+    grid-area: 1 / 1 / 1 / 1;
+    height: 100px;
+    border-radius: 20px;
+    padding: 20px;
+    align-items: center;
 }
+
+
