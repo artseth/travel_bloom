@@ -25,11 +25,12 @@
 
 
 
-document.addEventListener('DOMContentLoaded', function searchInfo() {
+// Named function to fetch and display travel data
+function searchInfo() {
   fetch('travel_recommendation_api.json')
     .then(response => response.json())
     .then(data => {
-      const infoDiv = document.querySelector('.glass-search-button');
+      const infoDiv = document.querySelector('.info');
       let html = '';
       
       // Display countries
@@ -75,6 +76,21 @@ document.addEventListener('DOMContentLoaded', function searchInfo() {
     })
     .catch(error => {
       console.error('Error:', error);
-      document.querySelector('.glass-search-button').innerHTML = '<p>Unable to load travel recommendations.</p>';
+      document.querySelector('.info').innerHTML = '<p>Unable to load travel recommendations.</p>';
     });
+}
+
+// Set up event listener for when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+  // Optionally display recommendations on page load
+  // displayAllTravelRecommendations(); // Uncomment if you want to show on load
+  
+  // Set up event listener for submit button
+  const submitButton = document.getElementById("searchBtn");
+  if (submitButton) {
+    submitButton.addEventListener('click', function(event) {
+      event.preventDefault(); // Prevent form submission if it's in a form
+      searchInfo();
+    });
+  }
 });
