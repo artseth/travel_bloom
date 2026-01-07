@@ -213,6 +213,13 @@
     
 }
 
+.team{
+    position: relative;
+    z-index: 1;
+    margin-top: 50px;
+    padding: 40px 20px;
+}
+
 .about_container{
     display: flex;
     align-items: flex-start; 
@@ -221,9 +228,16 @@
 }
 
 .team-grid{
-    display:flex;
-    gap:200px;
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 200px; /* Reduce gap for better mobile */
     justify-content: center;
-    margin-top: 150px;
+    max-width: 1200px;
+    margin: 100px auto;
 }
+
+.team-info{
+    color: white;
+}
+
 
