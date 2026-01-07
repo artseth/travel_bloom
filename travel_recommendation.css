@@ -241,3 +241,243 @@
 }
 
 
+/* Contact Page Specific Styles */
+
+/* Current page indicator in nav */
+.navbar ul li a.current {
+    color: aqua;
+    font-weight: bold;
+    position: relative;
+}
+
+.navbar ul li a.current::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: aqua;
+}
+
+/* Contact container */
+.contact-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 180px auto 50px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 768px) {
+    .contact-container {
+        grid-template-columns: 1fr;
+        margin-top: 150px;
+    }
+}
+
+/* Contact info section */
+.contact-info {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.contact-info h2 {
+    color: aqua;
+    margin-bottom: 20px;
+    font-size: 32px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.contact-intro {
+    line-height: 1.6;
+    margin-bottom: 30px;
+    font-size: 16px;
+}
+
+.contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.contact-item i {
+    color: aqua;
+    font-size: 24px;
+    margin-top: 5px;
+    min-width: 30px;
+}
+
+.contact-item h3 {
+    margin-bottom: 5px;
+    font-size: 18px;
+    color: white;
+}
+
+.contact-item p {
+    line-height: 1.5;
+    opacity: 0.9;
+}
+
+/* Contact form */
+.contact-form-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.contact-form-container h2 {
+    color: aqua;
+    margin-bottom: 25px;
+    font-size: 32px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    color: white;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: aqua;
+    box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.2);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.form-group.checkbox {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-group.checkbox input {
+    width: 18px;
+    height: 18px;
+}
+
+.submit-btn {
+    background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 114, 255, 0.4);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+/* FAQ Section */
+.faq-section {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.faq-section h2 {
+    color: aqua;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 32px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.faq-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.faq-item {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.faq-item h3 {
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    font-size: 18px;
+}
+
+.faq-item p {
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: 10px;
+    line-height: 1.5;
+    display: none;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}

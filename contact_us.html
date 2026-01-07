@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Travel Bloom</title>
+    <link rel="stylesheet" href="./travel_recommendation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    
+    <navbar class="navbar">
+        <ul class="navItems">
+            <li><a href="./travel_recommendation.html">Home</a></li>
+            <li><a href="./about_us.html">About Us</a></li>
+            <li><a href="./contact_us.html" class="current">Contact Us</a></li>
+        </ul>  
+    </navbar>
+
+    <div id="title">
+        <h1>
+            Contact Us
+        </h1>
+    </div> 
+
+    <div class="bgImage">
+        <img src="images/city3.jpg" alt="City landscape" srcset="">
+    </div>
+
+    <div class="contact-container">
+        <div class="contact-info">
+            <h2>Get In Touch</h2>
+            <p class="contact-intro">We're here to help you plan your perfect journey. Reach out to us with any questions, special requests, or to start planning your next adventure.</p>
+            
+            <div class="contact-details">
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <h3>Our Office</h3>
+                        <p>123 Adventure Lane<br>Travel City, TC 10001</p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <h3>Call Us</h3>
+                        <p>+1 (555) 123-4567<br>Mon-Fri: 9am-6pm EST</p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <h3>Email Us</h3>
+                        <p>info@travelbloom.com<br>support@travelbloom.com</p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <h3>Business Hours</h3>
+                        <p>Monday - Friday: 9am - 6pm<br>Saturday: 10am - 4pm<br>Sunday: Closed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="contact-form-container">
+            <h2>Send Us a Message</h2>
+            <form id="contactForm" class="contact-form">
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" required placeholder="Your name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required placeholder="Your email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Your phone number">
+                </div>
+                
+                <div class="form-group">
+                    <label for="subject">Subject *</label>
+                    <select id="subject" name="subject" required>
+                        <option value="" disabled selected>Select a subject</option>
+                        <option value="booking">Booking Inquiry</option>
+                        <option value="custom">Custom Trip Planning</option>
+                        <option value="support">Customer Support</option>
+                        <option value="feedback">Feedback</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Your Message *</label>
+                    <textarea id="message" name="message" rows="5" required placeholder="Tell us about your travel plans or questions..."></textarea>
+                </div>
+                
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="newsletter" name="newsletter">
+                    <label for="newsletter">Subscribe to our newsletter for travel tips and deals</label>
+                </div>
+                
+                <button type="submit" class="submit-btn">Send Message <i class="fas fa-paper-plane"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <div class="social_icons">
+        <img src="./images/youtube.png" class="icons" alt="YouTube">
+        <img src="./images/twitter.png" class="icons" alt="Twitter">
+        <img src="./images/tiktok.png" class="icons" alt="TikTok">
+        <img src="./images/instagram.png" class="icons" alt="Instagram">
+    </div>
+
+    <div class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <h3>How quickly do you respond to inquiries? <i class="fas fa-chevron-down"></i></h3>
+                <p>We typically respond within 24 hours during business days. For urgent matters, please call our office directly.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>Do you charge for consultation? <i class="fas fa-chevron-down"></i></h3>
+                <p>Initial consultations are always free. We only charge for our services when you decide to book through us.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>Can you help with last-minute trips? <i class="fas fa-chevron-down"></i></h3>
+                <p>Yes! While we specialize in carefully planned journeys, we can also assist with last-minute getaways.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="./travel_recommendation.js"></script>
+    
+</body>
+</html>
