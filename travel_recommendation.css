@@ -117,6 +117,7 @@
     height: 100vh;
     overflow: hidden;
     z-index: -1;
+    
 }
 
 .bgImage img {
@@ -182,4 +183,24 @@
 
 }
 
+.company_background{
+    padding: 80px;
+    display: flex;
+    color: white;
+    
+}
+
+.about_container{
+    display: flex;
+    align-items: flex-start; 
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.team{
+    display:flex;
+    gap:20px;
+    justify-content: center;
+    
+}
 
