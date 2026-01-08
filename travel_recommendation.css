@@ -200,6 +200,11 @@
     width: 50px;
 }
 
+.info{
+    margin-left: 150px;
+    margin-top: 200px;
+}
+
 .about_us{
     display: flex;
     align-items: center;
