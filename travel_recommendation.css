@@ -239,6 +239,13 @@
 
 .team-info{
     color: white;
+    background-color: #000;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.teamImg{
+    border-radius: 10px;
 }
 
 
