@@ -67,10 +67,10 @@ function searchInfo() {
     });
 }
 
-// Set up event listener for when the page loads
+// event listener for when the page loads
 document.addEventListener('DOMContentLoaded', function() {
   // Optionally display recommendations on page load
-  // displayAllTravelRecommendations(); // Uncomment if you want to show on load
+  // displayAllTravelRecommendations(); 
   
   // Set up event listener for submit button
   const submitButton = document.getElementById("searchBtn");
