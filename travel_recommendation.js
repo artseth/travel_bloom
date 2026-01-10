@@ -5,6 +5,9 @@
 // Named function to fetch and display travel data
 function searchInfo() {
   console.log('fetching JSON data')
+
+  const background = document.getElementById('background') || document.body;
+  background.classList.add('blur-background');
   fetch('./travel_recommendation_api.json')
     .then(response => {
       console.log('Response status:', response.status);

@@ -124,7 +124,13 @@
     height: 100vh;
     overflow: hidden;
     z-index: -1;
+    transition: filter 0.5s ease;
     
+}
+
+.bgImage.blur-background  {
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
 }
 
 .bgImage img {
@@ -203,6 +209,8 @@
 .info{
     margin-left: 150px;
     margin-top: 200px;
+    position: relative;
+    z-index: 10;
 }
 
 .about_us{
