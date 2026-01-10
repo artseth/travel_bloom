@@ -88,369 +88,343 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-// Load and store the travel data
-let travelData = {
-    countries: [],
-    temples: [],
-    beaches: []
-};
 
-// Fetch the JSON data
-async function loadTravelData() {
-    try {
-        const response = await fetch('./travel_recommendation_api.json'); 
-        travelData = await response.json();
-    } catch (error) {
-        console.error('Error loading travel data:', error);
-    }
-}
+// Store travel data globally
+let travelData = null;
 
-// Define keyword mappings with variations
+// Keyword mappings with variations
 const keywordMap = {
-    'beach': ['beach', 'beaches', 'beachs', 'shore', 'coast'],
-    'temple': ['temple', 'temples', 'shrine', 'pagoda', 'sanctuary'],
+    'beach': ['beach', 'beaches', 'shore', 'coast', 'seaside', 'ocean'],
+    'temple': ['temple', 'temples', 'shrine', 'pagoda', 'sanctuary', 'monastery'],
     'country': ['country', 'countries', 'nation', 'state', 'land']
 };
 
-// Country names for direct matching
-const countryNames = ['australia', 'japan', 'brazil', 'cambodia', 'india', 'french polynesia'];
+// Load data when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Load the travel data
+    fetch('./travel_recommendation_api.json')
+        .then(response => response.json())
+        .then(data => {
+            travelData = data;
+        })
+        .catch(error => {
+            console.error('Error loading travel data:', error);
+        });
 
-// Function to normalize and categorize search input
-function normalizeKeyword(input) {
-    const normalized = input.toLowerCase().trim();
-    
-    // First check if it's a direct country name
-    if (countryNames.includes(normalized)) {
-        return { type: 'country-name', value: normalized };
-    }
-    
-    // Check for category keywords
-    for (const [category, variations] of Object.entries(keywordMap)) {
-        if (variations.includes(normalized)) {
-            return { type: 'category', value: category };
-        }
-    }
-    
-    // Check if input contains any keywords
-    const words = normalized.split(/\s+/);
-    for (const word of words) {
-        for (const [category, variations] of Object.entries(keywordMap)) {
-            if (variations.includes(word)) {
-                return { type: 'category', value: category };
-            }
-        }
-        
-        // Check for country names in multi-word searches
-        if (countryNames.includes(word) || countryNames.some(country => country.includes(word))) {
-            return { type: 'country-name', value: word };
-        }
-    }
-    
-    return { type: 'general', value: normalized };
-}
-
-// Function to perform search
-function performSearch() {
+    // Set up event listeners
+    const searchBtn = document.getElementById('searchBtn');
     const searchInput = document.getElementById('searchInput');
-    const userInput = searchInput.value;
     
-    if (!userInput.trim()) {
+    if (searchBtn) {
+        searchBtn.addEventListener('click', function(event) {
+            event.preventDefault();
+            searchInfo();
+        });
+    }
+    
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                searchInfo();
+            }
+        });
+    }
+});
+
+// Main search function
+function searchInfo() {
+    const searchInput = document.getElementById('searchInput');
+    const userInput = searchInput.value.trim();
+    
+    if (!userInput) {
         alert('Please enter a search term');
         return;
     }
     
-    // Normalize the keyword
-    const keyword = normalizeKeyword(userInput);
+    // Add blur effect to background
+    const background = document.getElementById('background') || document.body;
+    background.classList.add('blur-background');
     
-    // Search through data based on keyword type
-    let results = [];
-    
-    switch (keyword.type) {
-        case 'category':
-            results = searchByCategory(keyword.value);
-            break;
-        case 'country-name':
-            results = searchByCountryName(keyword.value);
-            break;
-        case 'general':
-            results = searchAllCategories(keyword.value);
-            break;
+    if (!travelData) {
+        // Load data if not already loaded
+        fetch('./travel_recommendation_api.json')
+            .then(response => response.json())
+            .then(data => {
+                travelData = data;
+                performSearch(userInput, data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.querySelector('.info').innerHTML = '<p style="color:white">Unable to load travel recommendations.</p>';
+            });
+    } else {
+        performSearch(userInput, travelData);
     }
-    
-    // Display results
-    displaySearchResults(results, userInput);
 }
 
-// Search by category (beach, temple, country)
-function searchByCategory(category) {
-    const results = [];
+// Perform the actual search
+function performSearch(userInput, data) {
+    const normalizedInput = userInput.toLowerCase().trim();
+    const infoDiv = document.querySelector('.info');
     
-    switch (category) {
+    // Clear previous results
+    infoDiv.innerHTML = '';
+    
+    // Determine what to search for based on keywords
+    const searchResult = determineSearchType(normalizedInput);
+    
+    let html = '';
+    
+    switch(searchResult.type) {
         case 'beach':
-            // Add all beaches
-            results.push(...travelData.beaches.map(beach => ({
-                ...beach,
-                type: 'beach'
-            })));
+            html = searchBeaches(data, normalizedInput);
             break;
-            
         case 'temple':
-            // Add all temples
-            results.push(...travelData.temples.map(temple => ({
-                ...temple,
-                type: 'temple'
-            })));
+            html = searchTemples(data, normalizedInput);
             break;
-            
         case 'country':
-            // Add all countries and their cities
-            travelData.countries.forEach(country => {
-                // Add country as a result
-                results.push({
-                    id: `country-${country.id}`,
-                    name: country.name,
-                    type: 'country',
-                    description: `Explore destinations in ${country.name}`,
-                    imageUrl: country.cities[0]?.imageUrl || './images/default.jpg'
-                });
-                
-                // Add all cities in this country
-                country.cities.forEach(city => {
-                    results.push({
-                        id: `city-${country.id}-${city.name}`,
-                        name: city.name,
-                        type: 'city',
-                        description: city.description,
-                        imageUrl: city.imageUrl,
-                        country: country.name
-                    });
-                });
-            });
+            html = searchCountries(data, normalizedInput);
             break;
+        case 'mixed':
+            // Show all categories
+            html = searchAll(data, normalizedInput);
+            break;
+        default:
+            // General search across all fields
+            html = searchAll(data, normalizedInput);
     }
     
-    return results;
+    if (html === '') {
+        html = '<h3 style="color:white; text-align:center;">No results found. Try searching for "beach", "temple", "country", or specific locations.</h3>';
+    }
+    
+    infoDiv.innerHTML = html;
 }
 
-// Search by specific country name
-function searchByCountryName(countryName) {
-    const results = [];
-    const searchTerm = countryName.toLowerCase();
-    
-    // Find matching countries
-    travelData.countries.forEach(country => {
-        if (country.name.toLowerCase().includes(searchTerm)) {
-            // Add country
-            results.push({
-                id: `country-${country.id}`,
-                name: country.name,
-                type: 'country',
-                description: `Explore destinations in ${country.name}`,
-                imageUrl: country.cities[0]?.imageUrl || './images/default.jpg'
-            });
-            
-            // Add all cities in this country
-            country.cities.forEach(city => {
-                results.push({
-                    id: `city-${country.id}-${city.name}`,
-                    name: city.name,
-                    type: 'city',
-                    description: city.description,
-                    imageUrl: city.imageUrl,
-                    country: country.name
-                });
-            });
+// Determine what type of search to perform
+function determineSearchType(input) {
+    // Check for beach keywords
+    for (const keyword of keywordMap.beach) {
+        if (input === keyword || input.includes(keyword)) {
+            return { type: 'beach' };
         }
+    }
+    
+    // Check for temple keywords
+    for (const keyword of keywordMap.temple) {
+        if (input === keyword || input.includes(keyword)) {
+            return { type: 'temple' };
+        }
+    }
+    
+    // Check for country keywords
+    for (const keyword of keywordMap.country) {
+        if (input === keyword || input.includes(keyword)) {
+            return { type: 'country' };
+        }
+    }
+    
+    // If multiple keywords or general search
+    const words = input.split(' ');
+    let typesFound = [];
+    
+    words.forEach(word => {
+        if (keywordMap.beach.includes(word)) typesFound.push('beach');
+        if (keywordMap.temple.includes(word)) typesFound.push('temple');
+        if (keywordMap.country.includes(word)) typesFound.push('country');
     });
     
-    // Also search for beaches/temples in this country
-    travelData.beaches.forEach(beach => {
-        if (beach.name.toLowerCase().includes(searchTerm)) {
-            results.push({
-                ...beach,
-                type: 'beach'
-            });
-        }
-    });
+    if (typesFound.length > 1) {
+        return { type: 'mixed' };
+    } else if (typesFound.length === 1) {
+        return { type: typesFound[0] };
+    }
     
-    travelData.temples.forEach(temple => {
-        if (temple.name.toLowerCase().includes(searchTerm)) {
-            results.push({
-                ...temple,
-                type: 'temple'
-            });
-        }
-    });
-    
-    return results;
+    return { type: 'general' };
 }
 
-// Search across all categories
-function searchAllCategories(searchTerm) {
-    const results = [];
-    const term = searchTerm.toLowerCase();
+// Search beaches
+function searchBeaches(data, searchTerm) {
+    let html = '<h2 style="color:white; border-bottom: 2px solid white; padding-bottom: 10px;">Beaches</h2>';
+    let hasResults = false;
     
-    // Search beaches
-    travelData.beaches.forEach(beach => {
-        if (beach.name.toLowerCase().includes(term) || 
-            beach.description.toLowerCase().includes(term)) {
-            results.push({
-                ...beach,
-                type: 'beach'
-            });
-        }
-    });
-    
-    // Search temples
-    travelData.temples.forEach(temple => {
-        if (temple.name.toLowerCase().includes(term) || 
-            temple.description.toLowerCase().includes(term)) {
-            results.push({
-                ...temple,
-                type: 'temple'
-            });
-        }
-    });
-    
-    // Search countries and cities
-    travelData.countries.forEach(country => {
-        const countryName = country.name.toLowerCase();
-        
-        // Check country name
-        if (countryName.includes(term)) {
-            results.push({
-                id: `country-${country.id}`,
-                name: country.name,
-                type: 'country',
-                description: `Explore destinations in ${country.name}`,
-                imageUrl: country.cities[0]?.imageUrl || './images/default.jpg'
-            });
-        }
-        
-        // Check cities in this country
-        country.cities.forEach(city => {
-            if (city.name.toLowerCase().includes(term) || 
-                city.description.toLowerCase().includes(term)) {
-                results.push({
-                    id: `city-${country.id}-${city.name}`,
-                    name: city.name,
-                    type: 'city',
-                    description: city.description,
-                    imageUrl: city.imageUrl,
-                    country: country.name
-                });
+    if (data.beaches && data.beaches.length > 0) {
+        data.beaches.forEach(beach => {
+            // Check if beach matches search term (if it's not just "beach")
+            if (searchTerm === 'beach' || searchTerm === 'beaches' || 
+                beach.name.toLowerCase().includes(searchTerm) || 
+                beach.description.toLowerCase().includes(searchTerm)) {
+                
+                html += `
+                    <div style="margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; background: rgba(255,255,255,0.1);">
+                        <h3 style="color:white; margin-top: 0;">${beach.name}</h3>
+                        <img src="${beach.imageUrl}" alt="${beach.name}" style="max-width: 300px; height: auto; border-radius: 5px;">
+                        <p style="color:white; margin-top: 10px;">${beach.description}</p>
+                    </div>
+                `;
+                hasResults = true;
             }
         });
-    });
+    }
     
-    return results;
+    return hasResults ? html : '';
 }
 
-// Display search results
-function displaySearchResults(results, originalQuery) {
-    const resultsContainer = document.getElementById('searchResults');
-    if (!resultsContainer) return;
+// Search temples
+function searchTemples(data, searchTerm) {
+    let html = '<h2 style="color:white; border-bottom: 2px solid white; padding-bottom: 10px;">Temples</h2>';
+    let hasResults = false;
     
-    resultsContainer.innerHTML = '';
-    
-    if (results.length === 0) {
-        resultsContainer.innerHTML = `
-            <div class="no-results">
-                <h3>No results found for "${originalQuery}"</h3>
-                <p>Try searching for: beach, temple, country, or specific locations like "Japan", "Bora Bora"</p>
-            </div>
-        `;
-        return;
-    }
-    
-    // Group results by type for better organization
-    const groupedResults = {
-        country: [],
-        city: [],
-        beach: [],
-        temple: []
-    };
-    
-    results.forEach(result => {
-        groupedResults[result.type].push(result);
-    });
-    
-    let html = `<h3>Found ${results.length} results for "${originalQuery}"</h3>`;
-    
-    // Display countries
-    if (groupedResults.country.length > 0) {
-        html += `<h4>Countries</h4><div class="results-grid">`;
-        groupedResults.country.forEach(country => {
-            html += createResultCard(country);
+    if (data.temples && data.temples.length > 0) {
+        data.temples.forEach(temple => {
+            if (searchTerm === 'temple' || searchTerm === 'temples' || 
+                temple.name.toLowerCase().includes(searchTerm) || 
+                temple.description.toLowerCase().includes(searchTerm)) {
+                
+                html += `
+                    <div style="margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; background: rgba(255,255,255,0.1);">
+                        <h3 style="color:white; margin-top: 0;">${temple.name}</h3>
+                        <img src="${temple.imageUrl}" alt="${temple.name}" style="max-width: 300px; height: auto; border-radius: 5px;">
+                        <p style="color:white; margin-top: 10px;">${temple.description}</p>
+                    </div>
+                `;
+                hasResults = true;
+            }
         });
-        html += `</div>`;
     }
     
-    // Display cities
-    if (groupedResults.city.length > 0) {
-        html += `<h4>Cities</h4><div class="results-grid">`;
-        groupedResults.city.forEach(city => {
-            html += createResultCard(city);
-        });
-        html += `</div>`;
-    }
-    
-    // Display beaches
-    if (groupedResults.beach.length > 0) {
-        html += `<h4>Beaches</h4><div class="results-grid">`;
-        groupedResults.beach.forEach(beach => {
-            html += createResultCard(beach);
-        });
-        html += `</div>`;
-    }
-    
-    // Display temples
-    if (groupedResults.temple.length > 0) {
-        html += `<h4>Temples</h4><div class="results-grid">`;
-        groupedResults.temple.forEach(temple => {
-            html += createResultCard(temple);
-        });
-        html += `</div>`;
-    }
-    
-    resultsContainer.innerHTML = html;
+    return hasResults ? html : '';
 }
 
-// Create HTML for a result card
-function createResultCard(item) {
-    return `
-        <div class="result-card" data-type="${item.type}">
-            <img src="${item.imageUrl}" alt="${item.name}" class="result-image">
-            <div class="result-content">
-                <h5>${item.name}</h5>
-                ${item.country ? `<p class="country">${item.country}</p>` : ''}
-                <p class="description">${item.description}</p>
-                <span class="badge">${item.type.toUpperCase()}</span>
-            </div>
-        </div>
-    `;
-}
-
-// Initialize search functionality
-async function initializeSearch() {
-    // Load data first
-    await loadTravelData();
+// Search countries
+function searchCountries(data, searchTerm) {
+    let html = '<h2 style="color:white; border-bottom: 2px solid white; padding-bottom: 10px;">Countries</h2>';
+    let hasResults = false;
     
-    const searchButton = document.getElementById('searchButton');
-    const searchInput = document.getElementById('searchInput');
-    
-    if (!searchButton || !searchInput) {
-        console.error('Search elements not found');
-        return;
+    if (data.countries && data.countries.length > 0) {
+        data.countries.forEach(country => {
+            const countryNameLower = country.name.toLowerCase();
+            
+            // Check if we're searching for countries in general or a specific country
+            if (searchTerm === 'country' || searchTerm === 'countries' || 
+                countryNameLower.includes(searchTerm)) {
+                
+                html += `<h3 style="color:white; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px;">${country.name}</h3>`;
+                
+                country.cities.forEach(city => {
+                    html += `
+                        <div style="margin: 15px 0 15px 20px; padding: 15px; border-left: 3px solid #ddd; background: rgba(255,255,255,0.05);">
+                            <h4 style="color:white; margin-top: 0;">${city.name}</h4>
+                            <img src="${city.imageUrl}" alt="${city.name}" style="max-width: 280px; height: auto; border-radius: 5px;">
+                            <p style="color:white; margin-top: 10px;">${city.description}</p>
+                        </div>
+                    `;
+                });
+                hasResults = true;
+            }
+        });
     }
     
-    searchButton.addEventListener('click', performSearch);
-    searchInput.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter') {
-            performSearch();
-        }
-    });
+    return hasResults ? html : '';
 }
 
-// Initialize when page loads
-document.addEventListener('DOMContentLoaded', initializeSearch);
+// Search all categories
+function searchAll(data, searchTerm) {
+    let html = '';
+    let foundResults = false;
+    
+    // Search countries and cities
+    if (data.countries) {
+        data.countries.forEach(country => {
+            const countryNameLower = country.name.toLowerCase();
+            
+            if (countryNameLower.includes(searchTerm)) {
+                if (!foundResults) {
+                    html += '<h2 style="color:white; border-bottom: 2px solid white; padding-bottom: 10px;">Search Results</h2>';
+                    foundResults = true;
+                }
+                
+                html += `<h3 style="color:white; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px;">${country.name}</h3>`;
+                
+                country.cities.forEach(city => {
+                    html += `
+                        <div style="margin: 15px 0 15px 20px; padding: 15px; border-left: 3px solid #ddd; background: rgba(255,255,255,0.05);">
+                            <h4 style="color:white; margin-top: 0;">${city.name}</h4>
+                            <img src="${city.imageUrl}" alt="${city.name}" style="max-width: 280px; height: auto; border-radius: 5px;">
+                            <p style="color:white; margin-top: 10px;">${city.description}</p>
+                        </div>
+                    `;
+                });
+            }
+            
+            // Check individual cities
+            country.cities.forEach(city => {
+                if (city.name.toLowerCase().includes(searchTerm) || 
+                    city.description.toLowerCase().includes(searchTerm)) {
+                    
+                    if (!foundResults) {
+                        html += '<h2 style="color:white; border-bottom: 2px solid white; padding-bottom: 10px;">Search Results</h2>';
+                        foundResults = true;
+                    }
+                    
+                    html += `
+                        <div style="margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; background: rgba(255,255,255,0.1);">
+                            <h3 style="color:white; margin-top: 0;">${city.name}</h3>
+                            <p style="color:white; margin-bottom: 10px;"><em>In ${country.name}</em></p>
+                            <img src="${city.imageUrl}" alt="${city.name}" style="max-width: 300px; height: auto; border-radius: 5px;">
+                            <p style="color:white; margin-top: 10px;">${city.description}</p>
+                        </div>
+                    `;
+                }
+            });
+        });
+    }
+    
+    // Search beaches
+    if (data.beaches) {
+        data.beaches.forEach(beach => {
+            if (beach.name.toLowerCase().includes(searchTerm) || 
+                beach.description.toLowerCase().includes(searchTerm)) {
+                
+                if (!foundResults) {
+                    html += '<h2 style="color:white; border-bottom: 2px solid white; padding-bottom: 10px;">Search Results</h2>';
+                    foundResults = true;
+                }
+                
+                html += `
+                    <div style="margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; background: rgba(255,255,255,0.1);">
+                        <h3 style="color:white; margin-top: 0;">${beach.name}</h3>
+                        <img src="${beach.imageUrl}" alt="${beach.name}" style="max-width: 300px; height: auto; border-radius: 5px;">
+                        <p style="color:white; margin-top: 10px;">${beach.description}</p>
+                    </div>
+                `;
+            }
+        });
+    }
+    
+    // Search temples
+    if (data.temples) {
+        data.temples.forEach(temple => {
+            if (temple.name.toLowerCase().includes(searchTerm) || 
+                temple.description.toLowerCase().includes(searchTerm)) {
+                
+                if (!foundResults) {
+                    html += '<h2 style="color:white; border-bottom: 2px solid white; padding-bottom: 10px;">Search Results</h2>';
+                    foundResults = true;
+                }
+                
+                html += `
+                    <div style="margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; background: rgba(255,255,255,0.1);">
+                        <h3 style="color:white; margin-top: 0;">${temple.name}</h3>
+                        <img src="${temple.imageUrl}" alt="${temple.name}" style="max-width: 300px; height: auto; border-radius: 5px;">
+                        <p style="color:white; margin-top: 10px;">${temple.description}</p>
+                    </div>
+                `;
+            }
+        });
+    }
+    
+    return html;
+}
+
