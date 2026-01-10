@@ -428,3 +428,39 @@ function searchAll(data, searchTerm) {
     return html;
 }
 
+
+
+//Task 9 - Creating The Clear Button
+
+
+function clearResults() {
+
+    const infoDiv = document.querySelector('.info');
+    if (infoDiv) {
+        infoDiv.innerHTML = '';
+    }
+    
+  
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.value = '';
+    }
+    
+
+    const background = document.getElementById('background');
+    if (background) {
+        background.classList.remove('blur-background');
+    }
+}
+
+// event listener to set up the clear button
+document.addEventListener('DOMContentLoaded', function() {
+    const clearBtn = document.getElementById('clearBtn');
+    if (clearBtn) {
+        clearBtn.addEventListener('click', function(event) {
+            event.preventDefault(); 
+            clearResults();
+        });
+    }
+});
+
