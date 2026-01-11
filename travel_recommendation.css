@@ -42,9 +42,9 @@
    
 }
 
-.navbar.current{
+/* .navbar.current{
     color: purple;
-}
+} */
 
 .glass-search-form {
         max-width: 400px;
@@ -357,7 +357,7 @@
 .contact-form-container {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
-    border-radius: 20px;
+    border-radius:50px;
     padding: 30px;
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
@@ -423,7 +423,7 @@
 }
 
 .submit-btn {
-    background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+    background: linear-gradient(135deg, #00c6ff 0%, #00060c 100%);
     color: white;
     border: none;
     padding: 15px 30px;
