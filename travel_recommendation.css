@@ -54,7 +54,7 @@
         backdrop-filter: blur(10px);
         border-radius: 20px;
         border: 1px solid rgba(255, 255, 255, 0.2);
-        transform: translatex(180px);
+        transform: translateX(180px);
     }
 
     .glass-search-container {
