@@ -62,6 +62,7 @@ body {
     top : 0;
     z-index: 100;
     width: 100vw;
+    background: red;
 
 }
 
@@ -91,8 +92,8 @@ body {
 }
 
 .navbar ul li a:hover {
-    color: aqua;
-    transform: scale(1.10)
+    
+    transform: scale(1.10);
    
 }
 
