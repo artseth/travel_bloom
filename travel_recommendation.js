@@ -1,4 +1,7 @@
-
+//light and dark mode toggle
+function toggle() {
+    document.body.classList.toggle("light");
+}
 
 
 
