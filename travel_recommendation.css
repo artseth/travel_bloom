@@ -1,3 +1,14 @@
+:root {
+    --bg-dark: hsl(0 0% 0%);
+    --bg : hsl(0 0% 5%);
+    --bg-light: hdl (0 0 10%);
+    --text: hsl (0 0% 95%);
+    --text-muted: hsl(0 0% 70%);
+    --my-color: green;
+}
+
+
+
 *
 {
     margin: 0 auto;
@@ -10,6 +21,7 @@
     position: sticky;
     top : 0;
     z-index: 100;
+    width: 100vw;
 
 }
 
@@ -24,7 +36,7 @@
     margin: auto;
     height: 120px;
     text-decoration: none;
-    background-color: rgb(56, 63, 56);
+    background-color: var(--my-color)
 }
 
 .navbar ul li {
@@ -118,8 +130,6 @@
 
 #title{
     display: flex;
- 
- 
     padding: 10px;
     background-color: aqua;
     color: white;
@@ -159,7 +169,7 @@
 }
 
 .bgImage img {
-    width: 100%;
+    width: 100vw;
     height: 100%;
     object-fit: cover;
 }
