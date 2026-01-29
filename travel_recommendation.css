@@ -594,4 +594,11 @@
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.adding-window{
+    background: blue;
+    color: white;
+    margin: 20px;
+    
+    
+}
  
