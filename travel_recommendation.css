@@ -591,3 +591,9 @@
 }
 
 
+.cart{
+    color: #00c6ff;
+    background-color: #667eea;
+    display: flex;
+    flex-direction: column;
+}
