@@ -598,7 +598,15 @@
     background: blue;
     color: white;
     margin: 20px;
+    display: flex;
     
     
+}
+
+.cart {
+    display: flex;
+    flex-direction : column;
+    padding: 50px;
+    color: black;
 }
  
