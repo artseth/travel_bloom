@@ -20,11 +20,7 @@
 
 }
 
-@media (max-width: 425px){
-    .navbar{
-        display
-    }
-}
+
 
 .navItems{
     display: flex;
@@ -594,19 +590,5 @@
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.adding-window{
-    background: blue;
-    color: white;
-    margin: 20px;
-    display: flex;
-    
-    
-}
 
-.cart {
-    display: flex;
-    flex-direction : column;
-    padding: 50px;
-    color: black;
-}
  
