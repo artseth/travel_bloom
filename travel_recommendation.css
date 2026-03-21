@@ -3,6 +3,22 @@
 
 
 *
+{
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.navbar{
+    color: rgb(230, 21, 21);
+    position: sticky;
+    top : 0;
+    z-index: 100;
+    width: 100vw;
+    background: red;
+    z-index:100;
+
+}
 
 
 
