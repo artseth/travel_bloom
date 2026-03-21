@@ -6,22 +6,7 @@ function toggle() {
 
 
 // Named function to fetch and display travel data
-function searchInfo() {
-  console.log('fetching JSON data')
 
-  const background = document.getElementById('background') || document.body;
-  background.classList.add('blur-background');
-  fetch('./travel_recommendation_api.json')
-    .then(response => {
-      console.log('Response status:', response.status);
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      const infoDiv = document.querySelector('.info');
-      let html = '';
       
       // Display countries
       html += '<h2 style="color:white">Countries</h2>';
