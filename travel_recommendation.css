@@ -28,19 +28,7 @@
 
 
 
-.navItems{
-    display: flex;
-    color: white;
-    justify-content:space-evenly;
-    align-items: center;
-    position: relative;
-    gap: 20px;
-    list-style: none;
-    margin: auto;
-    height: 120px;
-    text-decoration: none;
-    background-color: var(--my-color)
-}
+
 
 .navbar ul li {
     align-items: flex-end;
